@@ -64,7 +64,7 @@ while true; do
             shift
             echo "Starting container ${container} from image ${image}"
             [ -n "$(docker ps -q -a -f name=${container})" ] && docker rm ${container}
-            docker run -d --name empdemo \
+            docker run -d --name ${container} \
                                 -p 8091:8091 \
                                 -p 18091:18091 \
                                 -p 8092:8092 \
@@ -117,7 +117,7 @@ while true; do
             if [ "$YES" -eq 0 ]; then
               echo -n "Container will stop. Continue? [y/n]: "
               read ANSWER
-              [ "$ANSWER" = "n" -o "$ANSWER" = "N" ] && exit
+              [ "$ANSWER" = "n" ] || [ "$ANSWER" = "N" ] && exit
             fi
             docker stop ${container}
             exit
@@ -132,7 +132,7 @@ while true; do
             if [ "$YES" -eq 0 ]; then
               echo -n "WARNING: removing the container can not be undone. Continue? [y/n]: "
               read ANSWER
-              [ "$ANSWER" = "n" -o "$ANSWER" = "N" ] && exit
+              [ "$ANSWER" = "n" ] || [ "$ANSWER" = "N" ] && exit
             fi
             for container_id in $(docker ps -q -a -f name=${container}); do
               docker stop ${container_id}
@@ -145,7 +145,7 @@ while true; do
             if [ "$YES" -eq 0 ]; then
               echo -n "Remove container images? [y/n]: "
               read ANSWER
-              [ "$ANSWER" = "n" -o "$ANSWER" = "N" ] && exit
+              [ "$ANSWER" = "n" ] || [ "$ANSWER" = "N" ] && exit
             fi
             for image in $(docker images ${image} | tail -n +2 | awk '{print $3}'); do docker rmi -f $image ; done
             exit

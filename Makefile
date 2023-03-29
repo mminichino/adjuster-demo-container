@@ -9,7 +9,7 @@ MAJOR_REV := $(shell cat ${major_rev_file})
 MINOR_REV := $(shell cat ${minor_rev_file})
 BUILD_REV := $(shell cat ${build_rev_file})
 
-.PHONY: build push
+.PHONY: script build push
 
 push:
 	git pull
@@ -29,10 +29,11 @@ push:
 	git add -A .
 	git commit -m "Build version $(MAJOR_REV).$(MINOR_REV).$(BUILD_REV)"
 	git push -u origin master
-build:
+script:
 	sed -e "s/CONTAINER_NAME/$(CONTAINER)/" rundemo.template > rundemo.sh
 	gh release create -R $(GIT_REPO) \
 	-t "Management Utility Release" \
 	-n "Auto Generated Run Utility" \
 	$(MAJOR_REV).$(MINOR_REV).$(BUILD_REV) rundemo.sh
+build:
 	docker build --force-rm=true --no-cache=true -t $(CONTAINER) -f Dockerfile .
