@@ -1,7 +1,13 @@
-CONTAINER=empdemo
-MAJOR_REV_FILE=major-revision.txt
-MINOR_REV_FILE=minor-revision.txt
-BUILD_REV_FILE=build-revision.txt
+descriptor_file := container.txt
+git_repo_file := repo.txt
+CONTAINER := $(shell cat ${descriptor_file})
+GIT_REPO := $(shell cat ${git_repo_file})
+major_rev_file=major-revision.txt
+minor_rev_file=minor-revision.txt
+build_rev_file=build-revision.txt
+MAJOR_REV := $(shell cat ${major_rev_file})
+MINOR_REV := $(shell cat ${minor_rev_file})
+BUILD_REV := $(shell cat ${build_rev_file})
 
 .PHONY: build push
 
@@ -24,4 +30,9 @@ push:
 	git commit -m "Build version $(MAJOR_REV).$(MINOR_REV).$(BUILD_REV)"
 	git push -u origin master
 build:
+	sed -e "s/CONTAINER_NAME/$(CONTAINER)/" rundemo.template > rundemo.sh
+	gh release create -R $(GIT_REPO) \
+	-t "Management Utility Release" \
+	-n "Auto Generated Run Utility" \
+	$(MAJOR_REV).$(MINOR_REV).$(BUILD_REV) rundemo.sh
 	docker build --force-rm=true --no-cache=true -t $(CONTAINER) -f Dockerfile .
