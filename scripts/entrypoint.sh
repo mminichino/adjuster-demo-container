@@ -153,7 +153,7 @@ if [ ! -f /demo/couchbase/.sgwconfigured ]; then
   fi
 
   echo "Creating Sync Gateway user"
-  ./sgwcli user map -h 127.0.0.1 -d 127.0.0.1 -f division -k adjuster_demo.data.adjusters -n adjuster_demo
+  ./sgwcli user map -h 127.0.0.1 -d 127.0.0.1 -f region -k adjuster_demo -n adjuster_demo
 
   echo "Adding sync function to database"
   ./sgwcli database sync -h 127.0.0.1 -n adjuster_demo -f /etc/sync_gateway/adjuster_demo.js
@@ -180,12 +180,11 @@ done
 
 echo "Starting auth microservice"
 export NVM_DIR=/usr/local/nvm
-export DATA_SCOPE=data
-export DATA_COLLECTION=adjusters
 export COUCHBASE_BUCKET=adjuster_demo
 export SYNC_GATEWAY_DB=adjuster_demo
 export AUTH_FIELD=user_id
-export GROUP_ID_FIELD=division
+export GROUP_ID_FIELD=region
+export TYPE_FIELD=adjuster
 . $NVM_DIR/nvm.sh
 cd /demo/couchbase/microservice
 pm2 start service.js

@@ -3,14 +3,14 @@ function sync(doc, oldDoc, meta) {
         return;
     }
 
-    if (!doc.division) {
+    if (!doc.region) {
         console.log("Sync function: document does not have division key");
         return;
     }
 
     try {
-        var division = doc.division;
-        var username = "division@" + division;
+        var region = doc.region;
+        var username = "region@" + region;
         var channelId = "channel." + username;
 
         console.log("Processing doc for channel " + channelId);
