@@ -181,7 +181,7 @@ done
 echo "Starting auth microservice"
 export NVM_DIR=/usr/local/nvm
 export COUCHBASE_BUCKET=adjuster_demo
-export SYNC_GATEWAY_DB=adjuster_demo
+export SYNC_GATEWAY_DB=adjuster
 export AUTH_FIELD=user_id
 export GROUP_ID_FIELD=region
 export TYPE_FIELD=adjuster
@@ -189,6 +189,7 @@ export TYPE_FIELD=adjuster
 cd /demo/couchbase/microservice
 pm2 start service.js
 
+echo "Container is now ready"
 echo "The following output is now a tail of sg_info.log:"
 tail -f /demo/couchbase/logs/sg_info.log &
 childPID=$!
