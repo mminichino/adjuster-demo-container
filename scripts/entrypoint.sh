@@ -130,7 +130,7 @@ while true; do
 done
 
 # Load the demo schema
-bin/cb_perf load --host 127.0.0.1 --count 20 --schema adjuster_demo --replica 0 --safe
+bin/cb_perf load --host 127.0.0.1 --count 30 --schema adjuster_demo --replica 0 --safe
 
 if [ $? -ne 0 ]; then
   echo "Schema configuration error"
@@ -142,10 +142,10 @@ cd /demo/couchbase/sgwcli
 # Configure the Sync Gateway
 if [ ! -f /demo/couchbase/.sgwconfigured ]; then
   echo "Creating Sync Gateway database configuration"
-  ./sgwcli database create -h 127.0.0.1 -b adjuster_demo -n adjuster_demo
+  ./sgwcli database create -h 127.0.0.1 -b adjuster_demo -n adjuster
 
   echo "Waiting for the database to become available."
-  ./sgwcli database wait -h 127.0.0.1 -n adjuster_demo
+  ./sgwcli database wait -h 127.0.0.1 -n adjuster
 
   if [ $? -ne 0 ]; then
     echo "Sync Gateway database creation error"
@@ -153,10 +153,10 @@ if [ ! -f /demo/couchbase/.sgwconfigured ]; then
   fi
 
   echo "Creating Sync Gateway user"
-  ./sgwcli user map -h 127.0.0.1 -d 127.0.0.1 -f region -k adjuster_demo -n adjuster_demo
+  ./sgwcli user map -h 127.0.0.1 -d 127.0.0.1 -f region -k adjuster_demo -n adjuster
 
   echo "Adding sync function to database"
-  ./sgwcli database sync -h 127.0.0.1 -n adjuster_demo -f /etc/sync_gateway/adjuster_demo.js
+  ./sgwcli database sync -h 127.0.0.1 -n adjuster -f /etc/sync_gateway/adjuster_demo.js
 
   if [ $? -ne 0 ]; then
     echo "Sync Gateway configuration error"
