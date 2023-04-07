@@ -28,7 +28,7 @@ push:
 	--push
 	git add -A .
 	git commit -m "Build version $(MAJOR_REV).$(MINOR_REV).$(BUILD_REV)"
-	git push -u origin master
+	git push -u origin main
 script:
 	sed -e "s/CONTAINER_NAME/$(CONTAINER)/" rundemo.template > rundemo.sh
 	gh release create -R $(GIT_REPO) \
