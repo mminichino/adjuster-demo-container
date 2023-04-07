@@ -13,13 +13,13 @@ BUILD_REV := $(shell cat ${build_rev_file})
 
 push:
 	git pull
-	@if ! test -f $(BUILD_REV_FILE); then echo 0 > $(BUILD_REV_FILE); fi
-	@echo $$(($$(cat $(BUILD_REV_FILE)) + 1)) > $(BUILD_REV_FILE)
-	@if ! test -f $(MAJOR_REV_FILE); then echo 1 > $(MAJOR_REV_FILE); fi
-	@if ! test -f $(MINOR_REV_FILE); then echo 0 > $(MINOR_REV_FILE); fi
-	$(eval MAJOR_REV := $(shell cat $(MAJOR_REV_FILE)))
-	$(eval MINOR_REV := $(shell cat $(MINOR_REV_FILE)))
-	$(eval BUILD_REV := $(shell cat $(BUILD_REV_FILE)))
+	@if ! test -f $(build_rev_file); then echo 0 > $(build_rev_file); fi
+	@echo $$(($$(cat $(build_rev_file)) + 1)) > $(build_rev_file)
+	@if ! test -f $(major_rev_file); then echo 1 > $(major_rev_file); fi
+	@if ! test -f $(minor_rev_file); then echo 0 > $(minor_rev_file); fi
+	$(eval MAJOR_REV := $(shell cat $(major_rev_file)))
+	$(eval MINOR_REV := $(shell cat $(minor_rev_file)))
+	$(eval BUILD_REV := $(shell cat $(build_rev_file)))
 	docker buildx build --platform linux/amd64,linux/arm64 \
 	--no-cache \
 	-t mminichino/$(CONTAINER):latest \
